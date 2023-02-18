@@ -1,3 +1,5 @@
+# Inspired by https://youtu.be/FkVfVDlrfgk
+
 function Remove-NvidiaSubcache($subfolder){
     $nvidia_cache = $env:USERPROFILE + "/AppData/Local/NVIDIA" + $subfolder
     Remove-AllFiles -folder $nvidia_cache
@@ -34,7 +36,14 @@ function Remove-NvidiaCache {
     Remove-NvidiaSubcache -subfolder "/GLCache"
 }
 
-Remove-NvidiaCache
+$response = Read-Host -Prompt "This script will delete NVIDIA cache files. Press 'Y' to acknowledge and continue"
 
-Write-Host "Use Disk Cleanup to clear the DirectX Shader Cache." -ForegroundColor Green
-Start-Process -FilePath CleanMgr.exe 
+if($response -eq "Y"){
+    Remove-NvidiaCache
+
+    Write-Host "Use Disk Cleanup to clear the DirectX Shader Cache." -ForegroundColor Green
+    Start-Process -FilePath CleanMgr.exe     
+} else {
+    Write-Host "Script aborted." -ForegroundColor Yellow
+}
+
